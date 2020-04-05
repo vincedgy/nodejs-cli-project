@@ -1,12 +1,16 @@
 import arg from "arg";
 import inquirer from "inquirer";
+import help from "./help";
+import main from "./main";
 
 function parseArgumentsIntoOptions(rawArgs) {
   const args = arg(
     {
+        "--help": Boolean,
       "--git": Boolean,
       "--yes": Boolean,
       "--install": Boolean,
+      "-h": "--help",
       "-g": "--git",
       "-y": "--yes",
       "-i": "--install"
@@ -17,6 +21,7 @@ function parseArgumentsIntoOptions(rawArgs) {
   );
   return {
     skipPrompts: args["--yes"] || false,
+    help: args["--help"] || false,
     git: args["--git"] || false,
     template: args._[0],
     runInstall: args["--install"] || false
@@ -28,7 +33,7 @@ async function promptForMissingOptions(options) {
   if (options.skipPrompts) {
     return {
       ...options,
-      template: opeion.template || defaultTemplate
+      template: options.template || defaultTemplate
     };
   }
 
@@ -63,6 +68,15 @@ async function promptForMissingOptions(options) {
 
 export async function cli(args) {
   let options = parseArgumentsIntoOptions(args);
+  if (options.help) {
+    help()
+    return
+    }
+
   options = await promptForMissingOptions(options);
-  console.log(options);
+  console.info('Your options were', options)
+  
+  // Call the main fonction with options
+  main(options)
+  
 }
