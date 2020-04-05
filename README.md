@@ -6,6 +6,14 @@ It uses ESM for packaging.
 
 It's inspired from this article [https://www.twilio.com/blog/how-to-build-a-cli-with-node-js](https://www.twilio.com/blog/how-to-build-a-cli-with-node-js), but not limited to.
 
+## Dependencises
+
+- esm : nodejs module management
+- arg : for commmand line arguments processing
+- chalk : for ANSI colorization of the command line
+- inquirer : modules that promps the user
+- marked : Markedown compilation lib
+- marked-terminal : displays Markedown (marked) to the terminal
 
 
 ## Install
@@ -87,3 +95,12 @@ What's missing ?
     * [X]: option 1
 
 ```
+
+## Architecture
+
+- `src/cli.js` : is reponsible for the CLI management which are controls on options and arguments
+- `src/main.js` : where resides your logic. It receives the JSON object with validated options
+- `src/help.js` : helper function tha handle the display of HELP.md
+
+- `bin/cli-project` : the project use ESM, this is the main project/module declaration file
+
